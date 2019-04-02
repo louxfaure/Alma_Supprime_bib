@@ -1,0 +1,32 @@
+{
+    "parameter": [
+        {
+            "name": {
+                "value":"HANDLE_RELATED_BIBS_isSelected",
+                "desc":null
+            },
+            "value": "false"
+        },
+        {
+            "name": {
+                "value": "HANDLE_INVENTORY_BIBS_isSelected",
+                "desc": null
+            },
+            "value": "false"
+        },
+        {
+            "name": {
+                "value": "set_id",
+                "desc": null
+            },
+            "value": "XXXXX"
+        },
+        {
+            "name": {
+                "value": "job_name",
+                "desc": null
+            },
+            "value": "Delete Bibliographic records - via API - nul"
+        }
+    ]
+}

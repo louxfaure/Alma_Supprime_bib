@@ -1,0 +1,74 @@
+{
+    "parameter": [
+        {
+            "name": {
+                "value":"output_Set_Name",
+                "desc":null
+            },
+            "value": "Notices à supprimer"
+        },
+        {
+            "name": {
+                "value": "InventoryChecker",
+                "desc": null
+            },
+            "value": "true"
+        },
+        {
+            "name": {
+                "value": "RelatedToCollectionChecker",
+                "desc": null
+            },
+            "value": "true"
+        },
+        {
+            "name": {
+                "value": "PoLineChecker",
+                "desc": null
+            },
+            "value": "true"
+        },
+        {
+            "name": {
+                "value": "RessourceRequestChecker",
+                "desc": null
+            },
+            "value": "true"
+        },	                				
+        {
+            "name": {
+                "value": "RessourceLendingRequestChecker",
+                "desc": null
+            },
+            "value": "true"
+        },
+        {
+            "name": {
+                "value": "ReadingListCitationChecker",
+                "desc": null
+            },
+            "value": "true"
+        },
+        {
+            "name": {
+                "value": "BibliographicRelationsChecker",
+                "desc": null
+            },
+            "value": "true"
+        },
+        {
+            "name": {
+                "value": "set_id",
+                "desc": null
+            },
+            "value": "2988107300004671"
+        },	                	   
+        {
+            "name": {
+                "value": "job_name",
+                "desc": null
+            },
+            "value": "Retrouve notices sans inventaires dans la NZ"
+        }
+    ]
+}
