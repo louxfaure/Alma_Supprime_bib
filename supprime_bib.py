@@ -11,7 +11,7 @@ from mail import mail
 from logs import logs
 from Alma_Apis_Interface import Alma_Apis
 
-i
+
 
 def get_job_parameters(file_name):
     dossier = os.path.dirname(os.path.abspath(__file__))
@@ -27,12 +27,13 @@ def get_job(job_id,instance_id):
     print(statut)
     if statut=='RUNNING' or statut=='INITIALIZING':
         progression=detail_service['progress']
-        print("\tTraitement en cours déxecution ({}%)".format(progression))
+        log_module.info("Traitement en cours déxecution ({}%)".format(progression))
         time.sleep(120)
         get_job(job_id,instance_id)
     elif statut == 'COMPLETED_SUCCESS':
         return detail_service
     else:
+        
         raise Exception("Statut du job inconnu !") 
 
 def post_job(job_id,job_parameters):
@@ -47,9 +48,12 @@ def post_job(job_id,job_parameters):
 # Initilalisation des paramétres 
 null=None
 service="supprime_bib"
-logs_mode = 'INFO'
-logs.init_logs('/home/loux/.Alma',programme,mode)
-log_module = logging.getLogger(programme)
+niveau_logs = 'INFO'
+
+logs_rep = '/home/loux/.Alma'
+#On initialise le logger
+logs.init_logs(logs_rep,service,niveau_logs)
+log_module = logging.getLogger(service)
 
 #On initialise l'objet API
 api = Alma_Apis.Alma(apikey=os.getenv('TEST_NETWORK_API'), region='EU', service=service)
@@ -61,7 +65,7 @@ identifie_bib_job_id='M58'
 identifie_bib_job_parameters = get_job_parameters('Identifie_notices_Job_Paramater.json')
 identifie_bib_job_instance_id = post_job(identifie_bib_job_id,identifie_bib_job_parameters)
 # identifie_bib_job_instance_id='2988022360004671'
-print('Identifiant de l''instance du job M58 : {}'.format(identifie_bib_job_instance_id))
+log_module.info('Identifiant de l''instance du job M58 : {}'.format(identifie_bib_job_instance_id))
 
 #On attend la fin du job et on récupère le nom du set qui a été créé
 time.sleep(120)
