@@ -3,10 +3,15 @@
 import os
 import json
 import re
-import requests
-from mail import mail
-from Alma_Apis_Interface import Alma_Apis
+# import requests
 import time
+
+#Modules maison
+from mail import mail
+from logs import logs
+from Alma_Apis_Interface import Alma_Apis
+
+i
 
 def get_job_parameters(file_name):
     dossier = os.path.dirname(os.path.abspath(__file__))
@@ -41,7 +46,15 @@ def post_job(job_id,job_parameters):
 
 # Initilalisation des paramétres 
 null=None
-api = Alma_Apis.Alma(apikey=os.getenv('TEST_NETWORK_API'), region='EU', service='Delete_Bib')
+service="supprime_bib"
+logs_mode = 'INFO'
+logs.init_logs('/home/loux/.Alma',programme,mode)
+log_module = logging.getLogger(programme)
+
+#On initialise l'objet API
+api = Alma_Apis.Alma(apikey=os.getenv('TEST_NETWORK_API'), region='EU', service=service)
+
+
 
 #On lance le job qui permet d'identifier depuis la NZ les notices sans inventaires
 identifie_bib_job_id='M58'
@@ -78,11 +91,13 @@ text = '''Service Delete_Bib terminé avec succès.
     * {} notice(s) supprimée(s)
     * {} notice(s) non supprimée(s) car liées à un inventaire
     * {} notice(s) non supprimée(s) car liées à une commande
-    * {} notice(s) non supprimée(s) car liées à d'autres notices\
+    * {} notice(s) non supprimée(s) car liées à d'autres notices
+    * {} notice(s) non supprimée(s) car présente dans une institution du réseau\
 '''.format(suppr_bib_job_rapport['counter'][0]['value'],
         suppr_bib_job_rapport['counter'][1]['value'],
         suppr_bib_job_rapport['counter'][2]['value'],
-        suppr_bib_job_rapport['counter'][3]['value'])
+        suppr_bib_job_rapport['counter'][3]['value'],
+        suppr_bib_job_rapport['counter'][4]['value'])
 message = mail.Mail()
 statut = message.envoie(os.getenv('ADMIN_MAIL'), os.getenv('ADMIN_MAIL'), 'Delete_bib Succés', text)
 print(statut)
