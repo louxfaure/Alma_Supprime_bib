@@ -62,7 +62,7 @@ api = Alma_Apis.Alma(apikey=os.getenv('TEST_NETWORK_API'), region='EU', service=
 
 #On lance le job qui permet d'identifier depuis la NZ les notices sans inventaires
 identifie_bib_job_id='M58'
-identifie_bib_job_parameters = get_job_parameters('Identifie_notices_Job_Paramater.json')
+identifie_bib_job_parameters = get_job_parameters('./Jobs_parameters/Identifie_notices_Job_Paramater.json')
 identifie_bib_job_instance_id = post_job(identifie_bib_job_id,identifie_bib_job_parameters)
 # identifie_bib_job_instance_id='2988022360004671'
 log_module.info('Identifiant de l''instance du job M58 : {}'.format(identifie_bib_job_instance_id))
@@ -80,7 +80,7 @@ print('Identifiant du set des notices à supprimer : {}'.format(search_set_id))
 
 #On lance la suppression des notices du set
 suppr_bib_job_id='M28'
-suppr_bib_job_parameters = get_job_parameters('Supprime_notices_Job_Paramater.json')
+suppr_bib_job_parameters = get_job_parameters('./Jobs_parameters/Supprime_notices_Job_Paramater.json')
 suppr_bib_job_parameters['parameter'][2]['value'] = search_set_id
 suppr_bib_job_instance_id = post_job(suppr_bib_job_id,suppr_bib_job_parameters)
 # suppr_bib_job_instance_id = '2988077480004671'
