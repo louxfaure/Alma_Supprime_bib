@@ -80,6 +80,10 @@ log_module.info("[get_job (Job ({}) Instance ({}))] Succés Nom du set des notic
 search_set_id = api.get_set_id(set_name)
 log_module.info('[search_set_id] Succés Identifiant du set des notices à supprimer ({})'.format(search_set_id))
 
+#On récupère le nombre de notices sans inveantaires dans le réseau
+number_of_set_members = api.get_set_member_number(search_set_id)
+log_module.info('[number_of_set_members] {} notices sans inventaire dans le réseau'.format(number_of_set_members))
+
 #On lance la suppression des notices du set
 suppr_bib_job_id='M28'
 suppr_bib_job_parameters = get_job_parameters('./Jobs_parameters/Supprime_notices_Job_Paramater.json')
