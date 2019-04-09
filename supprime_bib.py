@@ -52,7 +52,7 @@ null=None
 service="supprime_bib"
 niveau_logs = 'DEBUG'
 
-logs_rep = '/home/loux/.Alma'
+logs_rep = os.getenv('LOGS_PATH')
 #On initialise le logger
 logs.init_logs(logs_rep,service,niveau_logs)
 log_module = logging.getLogger(service)
@@ -98,11 +98,13 @@ suppr_bib_job_rapport = get_job(suppr_bib_job_id,suppr_bib_job_instance_id)
 
 log_module.debug(suppr_bib_job_rapport['counter'][0]['value'])
 text = '''Service Delete_Bib terminé avec succès.
+Sur {} notice(s) sans inventaire :
     * {} notice(s) supprimée(s)
     * {} notice(s) non supprimée(s) car liées à un inventaire
     * {} notice(s) non supprimée(s) car liées à une commande
     * {} notice(s) non supprimée(s) car liées à d'autres notices\
-'''.format(suppr_bib_job_rapport['counter'][0]['value'],
+'''.format(number_of_set_members,
+        suppr_bib_job_rapport['counter'][0]['value'],
         suppr_bib_job_rapport['counter'][1]['value'],
         suppr_bib_job_rapport['counter'][2]['value'],
         suppr_bib_job_rapport['counter'][3]['value'])
