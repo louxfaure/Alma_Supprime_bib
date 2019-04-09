@@ -5,6 +5,7 @@ import json
 import re
 # import requests
 import time
+import logging
 
 #Modules maison
 from mail import mail
@@ -49,7 +50,7 @@ def post_job(job_id,job_parameters):
 # Initilalisation des paramétres 
 null=None
 service="supprime_bib"
-niveau_logs = 'INFO'
+niveau_logs = 'DEBUG'
 
 logs_rep = '/home/loux/.Alma'
 #On initialise le logger
@@ -96,13 +97,11 @@ text = '''Service Delete_Bib terminé avec succès.
     * {} notice(s) supprimée(s)
     * {} notice(s) non supprimée(s) car liées à un inventaire
     * {} notice(s) non supprimée(s) car liées à une commande
-    * {} notice(s) non supprimée(s) car liées à d'autres notices
-    * {} notice(s) non supprimée(s) car présente dans une institution du réseau\
+    * {} notice(s) non supprimée(s) car liées à d'autres notices\
 '''.format(suppr_bib_job_rapport['counter'][0]['value'],
         suppr_bib_job_rapport['counter'][1]['value'],
         suppr_bib_job_rapport['counter'][2]['value'],
-        suppr_bib_job_rapport['counter'][3]['value'],
-        suppr_bib_job_rapport['counter'][4]['value'])
+        suppr_bib_job_rapport['counter'][3]['value'])
 message = mail.Mail()
 statut = message.envoie(os.getenv('ADMIN_MAIL'), os.getenv('ADMIN_MAIL'), 'Delete_bib Succés', text)
 log_module.info(statut)
