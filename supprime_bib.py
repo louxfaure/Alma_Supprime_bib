@@ -58,9 +58,7 @@ logs.init_logs(logs_rep,service,niveau_logs)
 log_module = logging.getLogger(service)
 
 #On initialise l'objet API
-api = Alma_Apis.Alma(apikey=os.getenv('TEST_NETWORK_API'), region='EU', service=service)
-
-
+api = Alma_Apis.Alma(apikey=os.getenv('PROD_NETWORK_CONF_API'), region='EU', service=service)
 
 #On lance le job qui permet d'identifier depuis la NZ les notices sans inventaires
 identifie_bib_job_id='M58'
