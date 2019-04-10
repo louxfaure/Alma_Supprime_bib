@@ -30,7 +30,7 @@ def get_job(job_id,instance_id):
     if statut=='RUNNING' or statut=='INITIALIZING':
         progression=detail_service['progress']
         log_module.info("[get_job (Job ({}) Instance ({}))] Traitement en cours déxecution ({}%)".format(job_id,instance_id,progression))
-        time.sleep(120)
+        time.sleep(900)
         get_job(job_id,instance_id)
     elif statut == 'COMPLETED_SUCCESS':
         return detail_service
@@ -68,19 +68,18 @@ identifie_bib_job_instance_id = post_job(identifie_bib_job_id,identifie_bib_job_
 log_module.info('[post_job (Job ({})] Instance Id({})'.format(identifie_bib_job_id,identifie_bib_job_instance_id))
 
 #On attend la fin du job et on récupère le nom du set qui a été créé
-time.sleep(120)
+time.sleep(900)
 identifie_bib_job_rapport = get_job(identifie_bib_job_id,identifie_bib_job_instance_id)
 
 set_name = identifie_bib_job_rapport['counter'][0]['value']
 log_module.info("[get_job (Job ({}) Instance ({}))] Succés Nom du set des notices à supprimer ({})".format(identifie_bib_job_id,identifie_bib_job_instance_id,set_name))
+#On récupère le nombre de notices sans inveantaires dans le réseau
+number_of_set_members = identifie_bib_job_rapport['counter'][1]['value']
+log_module.info('[number_of_set_members] {} notices sans inventaire dans le réseau'.format(number_of_set_members))
 
 #On récupère l'identifiant du set
 search_set_id = api.get_set_id(set_name)
 log_module.info('[search_set_id] Succés Identifiant du set des notices à supprimer ({})'.format(search_set_id))
-
-#On récupère le nombre de notices sans inveantaires dans le réseau
-number_of_set_members = api.get_set_member_number(search_set_id)
-log_module.info('[number_of_set_members] {} notices sans inventaire dans le réseau'.format(number_of_set_members))
 
 #On lance la suppression des notices du set
 suppr_bib_job_id='M28'
@@ -91,7 +90,7 @@ suppr_bib_job_instance_id = post_job(suppr_bib_job_id,suppr_bib_job_parameters)
 log_module.info('[post_job (Job ({})] Instance Id({})'.format(suppr_bib_job_id,suppr_bib_job_instance_id))
 
 #On attend la fin du job et on récupère le nombre de notices supprimées
-time.sleep(120)
+time.sleep(900)
 suppr_bib_job_rapport = get_job(suppr_bib_job_id,suppr_bib_job_instance_id)
 
 log_module.debug(suppr_bib_job_rapport['counter'][0]['value'])
