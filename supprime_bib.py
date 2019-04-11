@@ -63,12 +63,12 @@ api = Alma_Apis.Alma(apikey=os.getenv('PROD_NETWORK_CONF_API'), region='EU', ser
 #On lance le job qui permet d'identifier depuis la NZ les notices sans inventaires
 identifie_bib_job_id='M58'
 identifie_bib_job_parameters = get_job_parameters('./Jobs_parameters/Identifie_notices_Job_Paramater.json')
-identifie_bib_job_instance_id = post_job(identifie_bib_job_id,identifie_bib_job_parameters)
-# identifie_bib_job_instance_id='2988022360004671'
-log_module.info('[post_job (Job ({})] Instance Id({})'.format(identifie_bib_job_id,identifie_bib_job_instance_id))
+# identifie_bib_job_instance_id = post_job(identifie_bib_job_id,identifie_bib_job_parameters)
+identifie_bib_job_instance_id='4063693030004671'
+# log_module.info('[post_job (Job ({})] Instance Id({})'.format(identifie_bib_job_id,identifie_bib_job_instance_id))
 
 #On attend la fin du job et on récupère le nom du set qui a été créé
-time.sleep(900)
+# time.sleep(900)
 identifie_bib_job_rapport = get_job(identifie_bib_job_id,identifie_bib_job_instance_id)
 
 set_name = identifie_bib_job_rapport['counter'][0]['value']
