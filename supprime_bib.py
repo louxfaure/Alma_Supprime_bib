@@ -30,9 +30,12 @@ def get_job(job_id,instance_id):
     if statut=='RUNNING' or statut=='INITIALIZING':
         progression=detail_service['progress']
         log_module.info("[get_job (Job ({}) Instance ({}))] Traitement en cours déxecution ({}%)".format(job_id,instance_id,progression))
-        time.sleep(900)
+        time.sleep(1800)
         get_job(job_id,instance_id)
     elif statut == 'COMPLETED_SUCCESS':
+        log_module.debug(json.dumps(identifie_bib_job_rapport, indent=4, sort_keys=True))
+        time.sleep(1800)
+        detail_service = api.get_job_instances(job_id,instance_id)
         return detail_service
     else:
         log_module.error("[get_job (Job ({}) Instance ({}))] Statut ({}) Inconnu !".format(job_id,instance_id, statut))
@@ -63,12 +66,12 @@ api = Alma_Apis.Alma(apikey=os.getenv('PROD_NETWORK_CONF_API'), region='EU', ser
 #On lance le job qui permet d'identifier depuis la NZ les notices sans inventaires
 identifie_bib_job_id='M58'
 identifie_bib_job_parameters = get_job_parameters('./Jobs_parameters/Identifie_notices_Job_Paramater.json')
-# identifie_bib_job_instance_id = post_job(identifie_bib_job_id,identifie_bib_job_parameters)
-identifie_bib_job_instance_id='4063693030004671'
-# log_module.info('[post_job (Job ({})] Instance Id({})'.format(identifie_bib_job_id,identifie_bib_job_instance_id))
+identifie_bib_job_instance_id = post_job(identifie_bib_job_id,identifie_bib_job_parameters)
+# identifie_bib_job_instance_id='4063693030004671'
+log_module.info('[post_job (Job ({})] Instance Id({})'.format(identifie_bib_job_id,identifie_bib_job_instance_id))
 
 #On attend la fin du job et on récupère le nom du set qui a été créé
-# time.sleep(900)
+time.sleep(1800)
 identifie_bib_job_rapport = get_job(identifie_bib_job_id,identifie_bib_job_instance_id)
 
 set_name = identifie_bib_job_rapport['counter'][0]['value']
@@ -92,19 +95,21 @@ log_module.info('[post_job (Job ({})] Instance Id({})'.format(suppr_bib_job_id,s
 #On attend la fin du job et on récupère le nombre de notices supprimées
 time.sleep(900)
 suppr_bib_job_rapport = get_job(suppr_bib_job_id,suppr_bib_job_instance_id)
-
 log_module.debug(suppr_bib_job_rapport['counter'][0]['value'])
-text = '''Service Delete_Bib terminé avec succès.
-Sur {} notice(s) sans inventaire :
-    * {} notice(s) supprimée(s)
-    * {} notice(s) non supprimée(s) car liées à un inventaire
-    * {} notice(s) non supprimée(s) car liées à une commande
-    * {} notice(s) non supprimée(s) car liées à d'autres notices\
-'''.format(number_of_set_members,
-        suppr_bib_job_rapport['counter'][0]['value'],
-        suppr_bib_job_rapport['counter'][1]['value'],
-        suppr_bib_job_rapport['counter'][2]['value'],
-        suppr_bib_job_rapport['counter'][3]['value'])
+if suppr_bib_job_rapport['counter'][0]['value'] == 'The report was not generated due to the number of records required to be calculated':
+    text = 'The report was not generated due to the number of records required to be calculated'
+else:   
+    text = '''Service Delete_Bib terminé avec succès.
+    Sur {} notice(s) sans inventaire :
+        * {} notice(s) supprimée(s)
+        * {} notice(s) non supprimée(s) car liées à un inventaire
+        * {} notice(s) non supprimée(s) car liées à une commande
+        * {} notice(s) non supprimée(s) car liées à d'autres notices\
+    '''.format(number_of_set_members,
+            suppr_bib_job_rapport['counter'][0]['value'],
+            suppr_bib_job_rapport['counter'][1]['value'],
+            suppr_bib_job_rapport['counter'][2]['value'],
+            suppr_bib_job_rapport['counter'][3]['value'])
 message = mail.Mail()
 statut = message.envoie(os.getenv('ADMIN_MAIL'), os.getenv('ADMIN_MAIL'), 'Delete_bib Succés', text)
 log_module.info(statut)
