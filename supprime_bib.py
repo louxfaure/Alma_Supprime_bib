@@ -95,7 +95,7 @@ log_module.info('[post_job (Job ({})] Instance Id({})'.format(suppr_bib_job_id,s
 #On attend la fin du job et on récupère le nombre de notices supprimées
 time.sleep(900)
 suppr_bib_job_rapport = get_job(suppr_bib_job_id,suppr_bib_job_instance_id)
-log_module.debug(suppr_bib_job_rapport['counter'][0]['value'])
+# log_module.debug(suppr_bib_job_rapport['counter'][0]['value'])
 if suppr_bib_job_rapport['counter'][0]['value'] == 'The report was not generated due to the number of records required to be calculated':
     text = 'The report was not generated due to the number of records required to be calculated'
 else:   
