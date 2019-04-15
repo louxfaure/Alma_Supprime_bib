@@ -33,7 +33,7 @@ def get_job(job_id,instance_id):
         time.sleep(1800)
         get_job(job_id,instance_id)
     elif statut == 'COMPLETED_SUCCESS':
-        log_module.debug(json.dumps(identifie_bib_job_rapport, indent=4, sort_keys=True))
+        log_module.debug(json.dumps(detail_service, indent=4, sort_keys=True))
         time.sleep(1800)
         detail_service = api.get_job_instances(job_id,instance_id)
         return detail_service
