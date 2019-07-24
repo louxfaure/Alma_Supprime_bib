@@ -1,0 +1,9 @@
+[submodule "Alma_Apis_Interface"]
+	path = Alma_Apis_Interface
+	url = git@github.com:louxfaure/Alma_Apis_Interface.git
+[submodule "mail"]
+	path = mail
+	url = git@github.com:louxfaure/mail.git
+[submodule "logs"]
+	path = logs
+	url = git@github.com:louxfaure/logs.git
